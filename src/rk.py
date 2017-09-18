@@ -36,7 +36,7 @@ def ShuJv(BeautifulSoup2,xhbh):
         BaoJia=JiLu[4].get_text()
         LianXiRen=JiLu[5].get_text()
         ShouJi=JiLu[6].get_text()
-        DianHua=JiLu[7].get_text()
+        DianHua=re.findall(r"\w",JiLu[7].get_text())[0]
         GengXinShiJian=JiLu[8].get_text()
         xie.writerow([ShangPing,FenShu,GongHuo,FuWu,BaoJia,LianXiRen,ShouJi,DianHua,GengXinShiJian])
         # print(FenShu,GongHuo,FuWu,BaoJia,LianXiRen,ShouJi,DianHua,GengXinShiJian)
