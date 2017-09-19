@@ -112,46 +112,46 @@ for url in url_Du:
     #打开链接
     url=quote(url,'\/:?=;@&+$,%.#\n')
     Request1=request.Request(url,headers=header1)
-#     try:
-    DaKai_url=request.urlopen(Request1)
-    if DaKai_url.getcode()!=200:
-        print(str(JiCi)+"|打开链接"+url+"失败！略过此链接！")
+    try:
+        DaKai_url=request.urlopen(Request1)
+        if DaKai_url.getcode()!=200:
+            print(str(JiCi)+"|打开链接"+url+"失败！略过此链接！")
+            continue
+        else:
+            print(str(JiCi)+"|打开链接"+url+"成功！")
+        BeautifulSoup1=BeautifulSoup(DaKai_url,"html.parser",from_encoding="utf-8")
+        #提取链接
+        if re.search(r"DirectLink.direct",url)!=None:
+            pmbh=re.findall(r"sp=S?(\w+)&",url)[1]
+            url2="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/xyghzy/xzsp/XyspList.html?pmbh="+pmbh+"&cgsl=0&cgje=0.0&ppbh=null&lastcgsl=0&lastcgje=0.0&xmxh=null&xyghbh=null&isnwwbz=ww&area=00390019&czy=null&lbbs=null"
+            url2=quote(url2,'\/:?=;@&+$,%.#\n')
+            Request2=request.Request(url=url2,headers=header1)
+            DaKai_url2=request.urlopen(Request2)
+            BeautifulSoup2=BeautifulSoup(DaKai_url2,"html.parser",from_encoding="utf-8")
+            BeautifulSoup2=BeautifulSoup2.find("div",class_="sc_list")
+            LianJieJi=BeautifulSoup2.find_all("a",href=re.compile(r"(\S+\s?)+"))
+            LianJieChuli(LianJieJi,url_Ji)
+        elif re.search(r"DirectLink_4.direct",url)!=None:
+            xhbh=re.findall(r"sp=S?(\w+)&",url)[0]
+            url2="http://www.hngp.gov.cn/wsscnew/egp/public/gg_spzsxx/SpxhMainTab.html?xhbh="+xhbh+"&xmxh=null&area=00390019&xyghbh=ff80808151561b4701517a41b243602e&lastcgsl=0&cgje=0.0&lastcgje=0.0&cgsl=0&isnwwbz=ww&czy=null&lbbs=null"
+            url2=quote(url2,'\/:?=;@&+$,%.#\n')
+            Request2=request.Request(url=url2,headers=header1)
+            DaKai_url2=request.urlopen(Request2)
+            BeautifulSoup2=BeautifulSoup(DaKai_url2,"html.parser",from_encoding="utf-8")
+            ShuJv(BeautifulSoup2,xhbh)
+        else:
+            LianJieJi=BeautifulSoup1.find_all("a",href=re.compile(r"(\S+\s?)+"))
+            LianJieChuli(LianJieJi,url_Ji)
+    except KeyboardInterrupt:
+        print("终止运行！")
+        break
+    except :
+        print(str(JiCi)+"|打开链接"+url+"出现异常！略过此链接！")
         continue
-    else:
-        print(str(JiCi)+"|打开链接"+url+"成功！")
-    BeautifulSoup1=BeautifulSoup(DaKai_url,"html.parser",from_encoding="utf-8")
-    #提取链接
-    if re.search(r"DirectLink.direct",url)!=None:
-        pmbh=re.findall(r"sp=S?(\w+)&",url)[1]
-        url2="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/xyghzy/xzsp/XyspList.html?pmbh="+pmbh+"&cgsl=0&cgje=0.0&ppbh=null&lastcgsl=0&lastcgje=0.0&xmxh=null&xyghbh=null&isnwwbz=ww&area=00390019&czy=null&lbbs=null"
-        url2=quote(url2,'\/:?=;@&+$,%.#\n')
-        Request2=request.Request(url=url2,headers=header1)
-        DaKai_url2=request.urlopen(Request2)
-        BeautifulSoup2=BeautifulSoup(DaKai_url2,"html.parser",from_encoding="utf-8")
-        BeautifulSoup2=BeautifulSoup2.find("div",class_="sc_list")
-        LianJieJi=BeautifulSoup2.find_all("a",href=re.compile(r"(\S+\s?)+"))
-        LianJieChuli(LianJieJi,url_Ji)
-    elif re.search(r"DirectLink_4.direct",url)!=None:
-        xhbh=re.findall(r"sp=S?(\w+)&",url)[0]
-        url2="http://www.hngp.gov.cn/wsscnew/egp/public/gg_spzsxx/SpxhMainTab.html?xhbh="+xhbh+"&xmxh=null&area=00390019&xyghbh=ff80808151561b4701517a41b243602e&lastcgsl=0&cgje=0.0&lastcgje=0.0&cgsl=0&isnwwbz=ww&czy=null&lbbs=null"
-        url2=quote(url2,'\/:?=;@&+$,%.#\n')
-        Request2=request.Request(url=url2,headers=header1)
-        DaKai_url2=request.urlopen(Request2)
-        BeautifulSoup2=BeautifulSoup(DaKai_url2,"html.parser",from_encoding="utf-8")
-        ShuJv(BeautifulSoup2,xhbh)
-    else:
-        LianJieJi=BeautifulSoup1.find_all("a",href=re.compile(r"(\S+\s?)+"))
-        LianJieChuli(LianJieJi,url_Ji)
-#     except KeyboardInterrupt:
-#         print("终止运行！")
-#         break
-#     except :
-#         print(str(JiCi)+"|打开链接"+url+"出现异常！略过此链接！")
-#         continue
 #     time.sleep(0.2)
     #循环次数控制
-    # if JiCi>=50:
-        # break
+    if JiCi>=50:
+        break
 url_Xie.close()
 url_Du.close()
 url_Du2.close()
