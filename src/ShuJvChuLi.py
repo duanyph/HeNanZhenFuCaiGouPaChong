@@ -7,14 +7,15 @@ import csv
 import time
 import re
 header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0"}
+JiCi=0
 url_Du=open("url_ji.txt","r")
+url_ji=url_Du.readlines()
 WenJian=open("数据集.csv","w",encoding='gbk',newline='')
 xie=csv.writer(WenJian,dialect="excel")
 xie.writerow(["商品","得分","供货商","服务承诺","报价","联系人","移动电话","办公电话","更新时间"])
 WenJian.close()
 WenJian=open("数据集.csv","a+",encoding='gbk',newline='')
 xie=csv.writer(WenJian,dialect="excel")
-JiCi=0
 #数据提取
 def ShuJv(BeautifulSoup1,xhbh):
     ShangPing=BeautifulSoup1.find("div",class_="sc_pro_m").find("h1").get_text()
@@ -25,15 +26,14 @@ def ShuJv(BeautifulSoup1,xhbh):
         JiLu=tr.find_all("td")
         FenShu=JiLu[1].get_text()
         GongHuo=JiLu[2].find("a").get_text()
-        FuWu=re.findall(r"\w*",JiLu[3].get_text())[0]
+        FuWu=re.findall(r"\w",JiLu[3].get_text())[0]
         BaoJia=JiLu[4].get_text()
         LianXiRen=JiLu[5].get_text()
         ShouJi=JiLu[6].get_text()
-        DianHua=re.findall(r"\w*",JiLu[7].get_text())[0]
+        DianHua=re.findall(r"(\S+)*",JiLu[7].get_text())[0]
         GengXinShiJian=JiLu[8].get_text()
         print("采集数据:",ShangPing,FenShu,GongHuo,FuWu,BaoJia,LianXiRen,ShouJi,DianHua,GengXinShiJian)
         xie.writerow([ShangPing,FenShu,GongHuo,FuWu,BaoJia,LianXiRen,ShouJi,DianHua,GengXinShiJian])
-        WenJian.flush()
 #商品列表处理
 def XiangQingBiao(xhbh):
     QingQiu="http://www.hngp.gov.cn/wsscnew/egp/public/gg_spzsxx/SpxhMainTab,form.direct"
@@ -49,7 +49,7 @@ def XiangQingBiao(xhbh):
     XiangYing=request.urlopen(Request1)
     BeautifulSoup1=BeautifulSoup(XiangYing,"html.parser",from_encoding="utf-8")
     return BeautifulSoup1
-for url in url_Du:
+for url in url_ji:
     JiCi+=1
     try:
         url=quote(url,'\/:?=;@&+$,%.#\n')
