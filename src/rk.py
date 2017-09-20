@@ -122,8 +122,8 @@ for url in url_Du:
         continue
 #     time.sleep(0.2)
     #循环次数控制
-    if JiCi>=50:
-        break
+    # if JiCi>=50:
+        # break
 url_Xie.close()
 url_Du.close()
 url_Du2.close()
