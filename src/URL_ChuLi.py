@@ -12,17 +12,16 @@ url_QiShi="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/XyghxmIndex.html?
 HouZui=["mp3","mp4","txt","pdf","fiv","doc","png","img","jpg","jpeg","bmp","tmp"]
 ZhenZeHouZhui=r"(."+r"|.".join(HouZui)+r")$"
 URL_ShuJvKu=sqlite3.connect("URL_Ji.db")
-Xie=URL_ShuJvKu.cursor()
-Xie.execute("update URL_Ji set URL=null")
-Xie.execute("insert into URL_Ji values('"+url_QiShi+"')")
+YouBiao=URL_ShuJvKu.cursor()
+try:
+    YouBiao.execute("drop table URL_Ji")
+except:
+    pass
+YouBiao.execute("CREATE TABLE URL_Ji (ID INTEGER PRIMARY KEY,URL TEXT)")
+YouBiao.execute("insert into URL_Ji (URL) values('"+url_QiShi+"')")
 URL_ShuJvKu.commit()
-Du=URL_ShuJvKu.cursor()
-Du.execute("select URL from URL_Ji")
-url_Ji=Du.fetchall()
-Du2=URL_ShuJvKu.cursor()
 #链接处理
-def LianJieChuli(LianJieJi,url_Ji):
-    url_Ji=[]
+def LianJieChuli(LianJieJi):
     for LianJie in LianJieJi:
         LianJie=LianJie["href"]
         if re.search(r"^\/$\#\S+",LianJie,re.M|re.I)!=None:
@@ -57,23 +56,24 @@ def LianJieChuli(LianJieJi,url_Ji):
         if re.search(r"http://www.hngp.gov.cn/wsscnew|https://www.hngp.gov.cn/wsscnew", LianJie,re.M|re.I)==None:
             del(LianJie)
             continue
-        if (LianJie) in url_Ji:
-            del(LianJie)
+        #链接去重
+        YouBiao.execute("select URl from URL_Ji where URL='"+LianJie+"'")
+        if YouBiao.fetchone()==None:
+            YouBiao.execute("insert into URL_Ji (URL) values ('"+LianJie+"')")
         else:
-            LianJie=LianJie+"\n"
-            print("采集链接："+LianJie)
-            url_Ji.append(LianJie)
-    url_Ji=list(set(url_Ji))
-    for url in URL_Ji:
-        Xie.execute("insert into URL_Ji values ('"+url+"')")
-    print("写入链接完成！")
-    Du.execute("select URL from URL_Ji")
-    url_Ji=Du.fetchall()
-for url in url_Ji:
-    print(url_Ji)
-    url=url[0]
+            del(LianJie)
+            continue
+        print("采集链接："+LianJie)
+    URL_ShuJvKu.commit()
+    print("写入链接成功！")
+while 1:
     JiCi+=1
-    #打开链接
+    YouBiao.execute("select URL from URL_Ji where ID="+str(JiCi))
+    url=YouBiao.fetchone()
+    if url!=None:
+        url=url[0]
+    else:
+        break
     url=quote(url,'\/:?=;@&+$,%.#\n')
     Request1=request.Request(url,headers=header1)
     # try:
@@ -114,18 +114,20 @@ for url in url_Ji:
             BeautifulSoup3=BeautifulSoup(DaKai_QingQiu,"html.parser",from_encoding="utf-8")
             BeautifulSoup3=BeautifulSoup3.find("div",class_="sc_list")
             LianJieJi=BeautifulSoup3.find_all("a",href=re.compile(r"(\S+\s?)+"))
-            LianJieChuli(LianJieJi,url_Ji)
+            LianJieChuli(LianJieJi)
     else:
         LianJieJi=BeautifulSoup1.find_all("a",href=re.compile(r"(\S+\s?)+"))
-        LianJieChuli(LianJieJi,url_Ji)
+        LianJieChuli(LianJieJi)
     # except KeyboardInterrupt:
         # print("终止运行！")
         # break
     # except :
         # print("|打开链接"+url+"出现异常！略过此链接！")
         # break
-        continue
+        # continue
 #     time.sleep(0.2)
     #循环次数控制
     # if JiCi>=50:
         # break
+URL_ShuJvKu.commit()
+URL_ShuJvKu.close()
