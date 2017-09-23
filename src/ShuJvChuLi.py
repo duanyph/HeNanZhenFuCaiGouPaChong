@@ -33,6 +33,8 @@ URL_ShuJvKu.commit()
 def ShuJv(BeautifulSoup1,xhbh):
     ShangPing=BeautifulSoup1.find("div",class_="sc_pro_m").find("h1").get_text()
     BeautifulSoup2=XiangQingBiao(xhbh)
+    if BeautifulSoup2==None:
+        return
     tr_ji=BeautifulSoup2.find_all("tr")
     tr_ji=tr_ji[1:]
     for tr in tr_ji:
@@ -60,7 +62,14 @@ def XiangQingBiao(xhbh):
     }
     POST_Tou=parse.urlencode(POST_Tou).encode(encoding='UTF8')
     Request1=request.Request(url=QingQiu,headers=header1,data=POST_Tou)
-    XiangYing=request.urlopen(Request1)
+    try:
+        XiangYing=request.urlopen(Request1,timeout=5)
+    except urllib.URLError:
+        try:
+            XiangYing=request.urlopen(Request1,timeout=5)
+        except urllib.URLError:
+            print("POST包响应超时！略过此POST包！")
+            return None
     BeautifulSoup1=BeautifulSoup(XiangYing,"html.parser",from_encoding="utf-8")
     return BeautifulSoup1
 while 1:
@@ -73,13 +82,18 @@ while 1:
         break
     try:
         if re.search(r"DirectLink_4.direct",url)!=None:
-            url=quote(url,'\/:?=;@&+$,%.#\n')
-            Request1=request.Request(url,headers=header1)
             xhbh=re.findall(r"sp=S?(\w+)&",url)[0]
             url2="http://www.hngp.gov.cn/wsscnew/egp/public/gg_spzsxx/SpxhMainTab.html?xhbh="+xhbh+"&xmxh=null&area=00390019&xyghbh=ff80808151561b4701517a41b243602e&lastcgsl=0&cgje=0.0&lastcgje=0.0&cgsl=0&isnwwbz=ww&czy=null&lbbs=null"
             url2=quote(url2,'\/:?=;@&+$,%.#\n')
-            Request3=request.Request(url=url2,headers=header1)
-            DaKai_url2=request.urlopen(Request3)
+            Request1=request.Request(url=url2,headers=header1)
+            try:
+                DaKai_url2=request.urlopen(Request1,timeout=5)
+            except urllib.URLError:
+                try:
+                    DaKai_url2=request.urlopen(Request1,timeout=5)
+                except urllib.URLError:
+                    print("打开链接"+url2+"超时！略过此链接！")
+                    continue
             print(str(JiCi)+"|打开链接："+url2)
             BeautifulSoup2=BeautifulSoup(DaKai_url2,"html.parser",from_encoding="utf-8")
             ShuJv(BeautifulSoup2,xhbh)
@@ -87,7 +101,7 @@ while 1:
         print("终止运行！")
         break
     except :
-        print("|打开链接"+url2+"出现异常！略过此链接！")
+        print("|打开链接"+url2+"异常！略过此链接！")
         continue
 URL_ShuJvKu.commit()
 URL_ShuJvKu.close()
