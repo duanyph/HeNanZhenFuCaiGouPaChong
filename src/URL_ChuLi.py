@@ -65,7 +65,6 @@ def LianJieChuli(LianJieJi):
             continue
         print("采集链接："+LianJie)
     URL_ShuJvKu.commit()
-    print("写入链接成功！")
 while 1:
     JiCi+=1
     YouBiao.execute("select URL from URL_Ji where ID="+str(JiCi))
@@ -94,10 +93,10 @@ while 1:
             url2=quote(url2,'\/:?=;@&+$,%.#\n')
             Request2=request.Request(url=url2,headers=header1)
             try:
-                DaKai_url2=request.urlopen(Request2)
+                DaKai_url2=request.urlopen(Request2,timeout=5)
             except urllib.URLError:
                 try:
-                    DaKai_url2=request.urlopen(Request2)
+                    DaKai_url2=request.urlopen(Request2,timeout=5)
                 except urllib.URLError:
                     print("打开链接"+url+"超时！略过此链接！")
                     continue
@@ -121,10 +120,10 @@ while 1:
                 POST_Tou=parse.urlencode(POST_Tou).encode(encoding='UTF8')
                 Request3=request.Request(url=QingQiu,headers=header1,data=POST_Tou)
                 try:
-                    DaKai_QingQiu=request.urlopen(Request3)
+                    DaKai_QingQiu=request.urlopen(Request3,timeout=5)
                 except urllib.URLError:
                     try:
-                        DaKai_QingQiu=request.urlopen(Request3)
+                        DaKai_QingQiu=request.urlopen(Request3,timeout=5)
                     except urllib.URLError:
                         print("打开链接"+url+"超时！略过此链接！")
                         continue
