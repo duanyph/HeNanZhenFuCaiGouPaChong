@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import socket,sqlite3,re
 JiCi=0
 socket.setdefaulttimeout(5)
-RiZhi=open("URL_RiZhi.log","w")
+RiZhi=open("URL_RiZhi.log","w+")
 RiZhi.close()
 header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0"}
 url_QiShi="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/XyghxmIndex.html?area=00390019"

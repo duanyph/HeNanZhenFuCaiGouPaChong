@@ -4,7 +4,7 @@ from urllib.parse import quote
 from bs4 import BeautifulSoup
 import sqlite3,re,socket
 socket.setdefaulttimeout(10)
-RiZhi=open("ShuJv_RiZhi.log","w")
+RiZhi=open("ShuJv_RiZhi.log","w+")
 RiZhi.close()
 header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0"}
 JiCi=0
@@ -33,10 +33,10 @@ URL_ShuJvKu.commit()
 #数据提取
 def ShuJv(BeautifulSoup1,xhbh):
     ShangPingXingXi=BeautifulSoup1.find("div",class_="sc_wz").get_text()
-    ShangPingXingXi=re.findall(r"\-(\w+)",ShangPingXingXi)
+    ShangPingXingXi=re.findall(r"\-([^\-]+)",ShangPingXingXi)
     PingMu=ShangPingXingXi[0]
     PinPai=ShangPingXingXi[1]
-    ShangPing=BeautifulSoup1.find("div",class_="sc_pro_m").find("h1").get_text()
+    ShangPing=ShangPingXingXi[2]
     BeautifulSoup2=XiangQingBiao(xhbh)
     if BeautifulSoup2==None:
         return

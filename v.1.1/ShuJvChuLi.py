@@ -16,8 +16,8 @@ except:
 YouBiao.execute("""
 CREATE TABLE ShuJvJi (
     ID INTEGER PRIMARY KEY,
-    品种 TEXT,
     品目 TEXT,
+    品种 TEXT,
     商品 TEXT,
     得分 TEXT,
     供货商 TEXT,
@@ -32,10 +32,10 @@ URL_ShuJvKu.commit()
 #数据提取
 def ShuJv(BeautifulSoup1,xhbh):
     ShangPingXingXi=BeautifulSoup1.find("div",class_="sc_wz").get_text()
-    ShangPingXingXi=re.findall(r"\-(\w+)\-(\w+)",ShangPingXingXi)
-    PingZhong=ShangPingXingXi[0][0]
-    PingMu=ShangPingXingXi[0][1]
-    ShangPing=BeautifulSoup1.find("div",class_="sc_pro_m").find("h1").get_text()
+    ShangPingXingXi=re.findall(r"\-([^\-]+)",ShangPingXingXi)
+    PingMu=ShangPingXingXi[0]
+    PingZhong=ShangPingXingXi[1]
+    ShangPing=ShangPingXingXi[2]
     BeautifulSoup2=XiangQingBiao(xhbh)
     if BeautifulSoup2==None:
         return
@@ -51,8 +51,8 @@ def ShuJv(BeautifulSoup1,xhbh):
         ShouJi=JiLu[6].get_text()
         DianHua=re.findall(r"(\S+)*",JiLu[7].get_text())[0]
         GengXinShiJian=JiLu[8].get_text()
-        print("采集数据:",PingZhong,PingMu,ShangPing,FenShu,GongHuo,FuWu,BaoJia,LianXiRen,ShouJi,DianHua,GengXinShiJian)
-        YouBiao.execute("insert into ShuJvJi (品种,品目,商品,得分,供货商,服务承诺,报价,联系人,移动电话,办公电话,更新时间) values('"+PingZhong+"','"+PingMu+"','"+ShangPing+"','"+FenShu+"','"+GongHuo+"','"+FuWu+"','"+BaoJia+"','"+LianXiRen+"','"+ShouJi+"','"+DianHua+"','"+GengXinShiJian+"')")
+        print("采集数据:",PingMu,PingZhong,ShangPing,FenShu,GongHuo,FuWu,BaoJia,LianXiRen,ShouJi,DianHua,GengXinShiJian)
+        YouBiao.execute("insert into ShuJvJi (品目,品种,商品,得分,供货商,服务承诺,报价,联系人,移动电话,办公电话,更新时间) values('"+PingMu+"','"+PingZhong+"','"+ShangPing+"','"+FenShu+"','"+GongHuo+"','"+FuWu+"','"+BaoJia+"','"+LianXiRen+"','"+ShouJi+"','"+DianHua+"','"+GengXinShiJian+"')")
         URL_ShuJvKu.commit()
 #商品列表处理
 def XiangQingBiao(xhbh):
