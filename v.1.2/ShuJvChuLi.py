@@ -2,7 +2,8 @@
 from urllib import request,parse
 from urllib.parse import quote
 from bs4 import BeautifulSoup
-import sqlite3,re
+import sqlite3,re,socket
+socket.setdefaulttimeout(10)
 RiZhi=open("ShuJv_RiZhi.log","w")
 RiZhi.close()
 header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0"}
@@ -16,8 +17,8 @@ except:
 YouBiao.execute("""
 CREATE TABLE ShuJvJi (
     ID INTEGER PRIMARY KEY,
-    品种 TEXT,
     品目 TEXT,
+    品牌 TEXT,
     商品 TEXT,
     得分 TEXT,
     供货商 TEXT,
@@ -32,9 +33,9 @@ URL_ShuJvKu.commit()
 #数据提取
 def ShuJv(BeautifulSoup1,xhbh):
     ShangPingXingXi=BeautifulSoup1.find("div",class_="sc_wz").get_text()
-    ShangPingXingXi=re.findall(r"\-(\w+)\-(\w+)",ShangPingXingXi)
-    PingZhong=ShangPingXingXi[0][0]
-    PingMu=ShangPingXingXi[0][1]
+    ShangPingXingXi=re.findall(r"\-(\w+)",ShangPingXingXi)
+    PingMu=ShangPingXingXi[0]
+    PinPai=ShangPingXingXi[1]
     ShangPing=BeautifulSoup1.find("div",class_="sc_pro_m").find("h1").get_text()
     BeautifulSoup2=XiangQingBiao(xhbh)
     if BeautifulSoup2==None:
@@ -51,8 +52,8 @@ def ShuJv(BeautifulSoup1,xhbh):
         ShouJi=JiLu[6].get_text()
         DianHua=re.findall(r"(\S+)*",JiLu[7].get_text())[0]
         GengXinShiJian=JiLu[8].get_text()
-        print("采集数据:",PingZhong,PingMu,ShangPing,FenShu,GongHuo,FuWu,BaoJia,LianXiRen,ShouJi,DianHua,GengXinShiJian)
-        YouBiao.execute("insert into ShuJvJi (品种,品目,商品,得分,供货商,服务承诺,报价,联系人,移动电话,办公电话,更新时间) values('"+PingZhong+"','"+PingMu+"','"+ShangPing+"','"+FenShu+"','"+GongHuo+"','"+FuWu+"','"+BaoJia+"','"+LianXiRen+"','"+ShouJi+"','"+DianHua+"','"+GengXinShiJian+"')")
+        print("采集数据:",PingMu,PinPai,ShangPing,FenShu,GongHuo,FuWu,BaoJia,LianXiRen,ShouJi,DianHua,GengXinShiJian)
+        YouBiao.execute("insert into ShuJvJi (品目,品牌,商品,得分,供货商,服务承诺,报价,联系人,移动电话,办公电话,更新时间) values('"+PingMu+"','"+PinPai+"','"+ShangPing+"','"+FenShu+"','"+GongHuo+"','"+FuWu+"','"+BaoJia+"','"+LianXiRen+"','"+ShouJi+"','"+DianHua+"','"+GengXinShiJian+"')")
         URL_ShuJvKu.commit()
 #商品列表处理
 def XiangQingBiao(xhbh):
@@ -84,7 +85,7 @@ def RiZhiChuLi(CuoWuMa,url=None,xhbh=None,url2=None):
     RiZhi.close()
 while 1:
     JiCi+=1
-    YouBiao.execute("select URL from URL_Ji where ID="+str(JiCi))
+    YouBiao.execute("select URL from URL_Ji2 where ID="+str(JiCi))
     url=YouBiao.fetchone()
     if url!=None:
         url=url[0]
@@ -111,9 +112,9 @@ while 1:
     except KeyboardInterrupt:
         print("终止运行！")
         break
-    # except :
-        # RiZhiChuLi(3,url,xhbh,url2)
-        # print("|打开链接"+url2+"异常！略过此链接！")
-        # continue
+    except :
+        RiZhiChuLi(3,url,xhbh,url2)
+        print("|打开链接"+url2+"异常！略过此链接！")
+        continue
 URL_ShuJvKu.commit()
 URL_ShuJvKu.close()
