@@ -6,6 +6,7 @@ import socket,sqlite3,re
 JiCi=0
 socket.setdefaulttimeout(10)
 RiZhi=open("URL_RiZhi.log","w")
+RiZhi.write("错误码|错误地址1|错误链接1|pmbh码|错误链接2|错误地址2")
 RiZhi.close()
 header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0"}
 HouZui=["mp3","mp4","txt","pdf","fiv","doc","png","img","jpg","jpeg","bmp","tmp"]

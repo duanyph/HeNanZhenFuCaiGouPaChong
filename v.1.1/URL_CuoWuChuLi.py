@@ -119,6 +119,6 @@ for RiZhi in CuoWuRiZhi:
         print("终止运行！")
         break
     except :
-        RiZhiChuLi(4,URL,pmbh,"",JiCi1)
-        print("|打开链接"+URL+"出现异常！略过此链接！")
+        RiZhiChuLi(4,"",pmbh,"",JiCi1)
+        print("|出现异常！pmbh码为："+str(pmbh))
         continue

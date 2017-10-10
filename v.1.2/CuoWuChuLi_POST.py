@@ -61,8 +61,8 @@ def RiZhiChuLi(CuoWuMa,url=None,pmbh=None,url2=None,JiCi1=None):
     RiZhi=open("URL_RiZhi.log","a+")
     RiZhi.write(str(CuoWuMa)+"|"+str(JiCi)+"|"+url+"|"+pmbh+"|"+url2+"|"+str(JiCi1)+"\n")
     RiZhi.close()
-JiCi1=287
-pmbh="00480001001500190003"
+JiCi1=str(input("请输入错误地址2："))
+pmbh=input("请输入pmbh码：")
 POST_Tou={
 "formids":"gysmcword,skeyword,AddGwc,search,change,jgqj_1,jgqj_2,jgqj_3,jgqj_4,jgqj_5,jgqj_6,xltj,jgtj,sjsjtj,ghslb_qb,ghslb_ds,ghslb_gys",
 "area":"00390019",

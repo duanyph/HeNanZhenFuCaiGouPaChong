@@ -6,7 +6,7 @@ import socket,sqlite3,re
 JiCi=0
 socket.setdefaulttimeout(10)
 header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0"}
-url="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/XyghxmIndex,$DirectLink.direct?sp=S0085&sp=S0048000100110004000500010003&sp=Sww&sp=S00390019"
+url=input("请输入错误地址1：")
 HouZui=["mp3","mp4","txt","pdf","fiv","doc","png","img","jpg","jpeg","bmp","tmp"]
 ZhenZeHouZhui=r"(."+r"|.".join(HouZui)+r")$"
 URL_ShuJvKu=sqlite3.connect("ShuJvJi.db")
