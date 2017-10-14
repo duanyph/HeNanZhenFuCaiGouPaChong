@@ -68,10 +68,10 @@ def XiangQingBiao(xhbh):
     POST_Tou=parse.urlencode(POST_Tou).encode(encoding='UTF8')
     Request1=request.Request(url=QingQiu,headers=header1,data=POST_Tou)
     try:
-        XiangYing=request.urlopen(Request1,timeout=5)
+        XiangYing=request.urlopen(Request1)
     except:
         try:
-            XiangYing=request.urlopen(Request1,timeout=5)
+            XiangYing=request.urlopen(Request1)
         except:
             print("POST包响应超时！略过此POST包！")
             RiZhiChuLi(2,url,xhbh,url2)
@@ -98,10 +98,10 @@ while 1:
             url2=quote(url2,'\/:?=;@&+$,%.#\n')
             Request1=request.Request(url=url2,headers=header1)
             try:
-                DaKai_url2=request.urlopen(Request1,timeout=5)
+                DaKai_url2=request.urlopen(Request1)
             except:
                 try:
-                    DaKai_url2=request.urlopen(Request1,timeout=5)
+                    DaKai_url2=request.urlopen(Request1)
                 except:
                     print("打开链接"+url2+"超时！略过此链接！")
                     RiZhiChuLi(1,url,xhbh,url2)
