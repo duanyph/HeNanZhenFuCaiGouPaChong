@@ -35,7 +35,7 @@ def ShuJv(BeautifulSoup1,xhbh):
     ShangPingXingXi=re.findall(r"\-([^\-]+)",ShangPingXingXi)
     PingMu=ShangPingXingXi[0]
     PingZhong=ShangPingXingXi[1]
-    ShangPing=ShangPingXingXi[2]
+    ShangPing=BeautifulSoup1.find("div",class_="sc_pro_m").find("h1").get_text()
     BeautifulSoup2=XiangQingBiao(xhbh)
     if BeautifulSoup2==None:
         return
