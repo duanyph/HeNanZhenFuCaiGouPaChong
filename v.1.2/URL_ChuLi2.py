@@ -2,7 +2,7 @@
 from urllib import request,parse
 from urllib.parse import quote
 from bs4 import BeautifulSoup
-import socket,sqlite3,re
+import socket,sqlite3,re,time
 JiCi=0
 socket.setdefaulttimeout(15)
 RiZhi=open("URL_RiZhi.log","w")
@@ -77,20 +77,7 @@ while 1:
         url=url[0]
     else:
         break
-    url=quote(url,'\/:?=;@&+$,%.#\n')
-    Request1=request.Request(url,headers=header1)
     try:
-        try:
-            DaKai_url=request.urlopen(Request1)
-        except :
-            try:
-                DaKai_url=request.urlopen(Request1)
-            except :
-                print("打开链接"+url+"超时！略过此链接！")
-                RiZhiChuLi(1,url,pmbh,url2,JiCi1)
-                continue
-        print(str(JiCi)+"|打开链接"+url)
-        BeautifulSoup1=BeautifulSoup(DaKai_url,"html.parser",from_encoding="utf-8")
         #提取链接
         if re.search(r"DirectLink.direct",url)!=None:
             pmbh=re.findall(r"sp=S?(\w+)&",url)[1]
@@ -138,6 +125,7 @@ while 1:
                 BeautifulSoup3=BeautifulSoup3.find("div",class_="sc_list")
                 LianJieJi=BeautifulSoup3.find_all("a",href=re.compile(r"(\S+\s?)+"))
                 LianJieChuli(LianJieJi)
+        time.sleep(0.5)
     except KeyboardInterrupt:
         print("终止运行！")
         break
@@ -145,7 +133,6 @@ while 1:
         # RiZhiChuLi(3,url,pmbh,url2,JiCi1)
         # print("|打开链接"+url+"出现异常！略过此链接！")
         # continue
-#     time.sleep(0.2)
     #循环次数控制
     # if JiCi>=50:
         # break
