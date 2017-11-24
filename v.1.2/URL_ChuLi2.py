@@ -8,7 +8,8 @@ socket.setdefaulttimeout(15)
 RiZhi=open("URL_RiZhi.log","w")
 RiZhi.write("错误码|错误地址1|错误链接1|pmbh码|错误链接2|错误地址2\n")
 RiZhi.close()
-header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0"}
+header1={"User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0",
+        "Cookie":"JSESSIONID=375D5331A7EEC215D44B13E1563EB827"}
 HouZui=["mp3","mp4","txt","pdf","fiv","doc","png","img","jpg","jpeg","bmp","tmp"]
 ZhenZeHouZhui=r"(."+r"|.".join(HouZui)+r")$"
 URL_ShuJvKu=sqlite3.connect("ShuJvJi.db")
@@ -97,14 +98,22 @@ while 1:
             #列表页处理
             YeShu=BeautifulSoup2.find("span",style="float:right").get_text()
             YeShu=re.findall(r"共(\d+)页",YeShu)[0]
-            QingQiu="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/xyghzy/xzsp/XyspList,form.direct"
+            QingQiu="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/xyghzy/xzsp/XyspList,form.sdirect"
             for JiCi1 in range(int(YeShu)):
                 JiCi1+=1
                 POST_Tou={
                 "formids":"gysmcword,skeyword,AddGwc,search,change,jgqj_1,jgqj_2,jgqj_3,jgqj_4,jgqj_5,jgqj_6,xltj,jgtj,sjsjtj,ghslb_qb,ghslb_ds,ghslb_gys",
+                "xmxh":"null",
                 "area":"00390019",
+                "Hidden":pmbh,
+                "Hidden_0":"null",
+                "cgsl":"0",
+                "cgje":"0.0",
+                "lastcgsl":"0",
                 "lastcgje":"0.0",
+                "xyghbh":"null",
                 "pmbh":pmbh,
+                "ppbh":"null",
                 "isnwwbz":"ww",
                 "currentPage_Split":JiCi1,
                 "pageSize_Split":"12",
@@ -122,17 +131,18 @@ while 1:
                         RiZhiChuLi(3,url,pmbh,url2,JiCi1)
                         continue
                 BeautifulSoup3=BeautifulSoup(DaKai_QingQiu,"lxml",from_encoding="utf-8")
-                BeautifulSoup3=BeautifulSoup3.find("div",class_="sc_list")
+                # print(BeautifulSoup3)
+                # exit()
                 LianJieJi=BeautifulSoup3.find_all("a",href=re.compile(r"(\S+\s?)+"))
                 LianJieChuli(LianJieJi)
         time.sleep(0.5)
     except KeyboardInterrupt:
         print("终止运行！")
         break
-    # except :
-        # RiZhiChuLi(3,url,pmbh,url2,JiCi1)
-        # print("|打开链接"+url+"出现异常！略过此链接！")
-        # continue
+    except :
+        RiZhiChuLi(3,url,pmbh,url2,JiCi1)
+        print("|打开链接"+url+"出现异常！略过此链接！")
+        continue
     #循环次数控制
     # if JiCi>=50:
         # break

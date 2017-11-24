@@ -2,7 +2,7 @@
 from urllib import request,parse
 from urllib.parse import quote
 from bs4 import BeautifulSoup
-import sqlite3,re,socket
+import sqlite3,re,socket,time
 socket.setdefaulttimeout(10)
 RiZhi=open("ShuJv_RiZhi.log","w+")
 RiZhi.close()
@@ -109,6 +109,7 @@ while 1:
             print(str(JiCi)+"|打开链接："+url2)
             BeautifulSoup2=BeautifulSoup(DaKai_url2,"html.parser",from_encoding="utf-8")
             ShuJv(BeautifulSoup2,xhbh)
+        time.sleep(0.1)
     except KeyboardInterrupt:
         print("终止运行！")
         break
