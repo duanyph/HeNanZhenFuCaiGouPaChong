@@ -7,7 +7,7 @@ socket.setdefaulttimeout(10)
 RiZhi=open("ShuJv_RiZhi.log","w+")
 RiZhi.close()
 header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0",
-        "Cookie": "JSESSIONID=8EFE479D3B057C7DC46A92D9E314A004"}
+        "Cookie": input("请输入Cookie码：")}
 JiCi=0
 URL_ShuJvKu=sqlite3.connect("ShuJvJi.db")
 YouBiao=URL_ShuJvKu.cursor()

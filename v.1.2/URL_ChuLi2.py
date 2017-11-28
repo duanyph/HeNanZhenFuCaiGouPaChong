@@ -9,7 +9,7 @@ RiZhi=open("URL_RiZhi.log","w")
 RiZhi.write("错误码|错误地址1|错误链接1|pmbh码|错误链接2|错误地址2\n")
 RiZhi.close()
 header1={"User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0",
-        "Cookie":"JSESSIONID=8EFE479D3B057C7DC46A92D9E314A004"}
+        "Cookie":input("请输入Cookie码：")}
 HouZui=["mp3","mp4","txt","pdf","fiv","doc","png","img","jpg","jpeg","bmp","tmp"]
 ZhenZeHouZhui=r"(."+r"|.".join(HouZui)+r")$"
 URL_ShuJvKu=sqlite3.connect("ShuJvJi.db")
