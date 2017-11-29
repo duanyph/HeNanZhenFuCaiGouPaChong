@@ -5,7 +5,8 @@ from bs4 import BeautifulSoup
 import socket,sqlite3,re
 JiCi=0
 socket.setdefaulttimeout(10)
-header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0"}
+header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0"
+        "Cookie":input("请输入Cookie码：")}
 url=input("请输入错误链接1：")
 HouZui=["mp3","mp4","txt","pdf","fiv","doc","png","img","jpg","jpeg","bmp","tmp"]
 ZhenZeHouZhui=r"(."+r"|.".join(HouZui)+r")$"
@@ -80,19 +81,27 @@ if re.search(r"DirectLink.direct",url)!=None:
     #列表页处理
     YeShu=BeautifulSoup2.find("span",style="float:right").get_text()
     YeShu=re.findall(r"共(\d+)页",YeShu)[0]
-    QingQiu="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/xyghzy/xzsp/XyspList,form.direct"
+    QingQiu="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/xyghzy/xzsp/XyspList,form.sdirect"
     for JiCi1 in range(int(YeShu)):
         JiCi1+=1
         POST_Tou={
-        "formids":"gysmcword,skeyword,AddGwc,search,change,jgqj_1,jgqj_2,jgqj_3,jgqj_4,jgqj_5,jgqj_6,xltj,jgtj,sjsjtj,ghslb_qb,ghslb_ds,ghslb_gys",
-        "area":"00390019",
-        "lastcgje":"0.0",
-        "pmbh":pmbh,
-        "isnwwbz":"ww",
-        "currentPage_Split":JiCi1,
-        "pageSize_Split":"12",
-        "goToPage_Split":JiCi1,
-        }
+                "formids":"gysmcword,skeyword,AddGwc,search,change,jgqj_1,jgqj_2,jgqj_3,jgqj_4,jgqj_5,jgqj_6,xltj,jgtj,sjsjtj,ghslb_qb,ghslb_ds,ghslb_gys",
+                "xmxh":"null",
+                "area":"00390019",
+                "Hidden":pmbh,
+                "Hidden_0":"null",
+                "cgsl":"0",
+                "cgje":"0.0",
+                "lastcgsl":"0",
+                "lastcgje":"0.0",
+                "xyghbh":"null",
+                "pmbh":pmbh,
+                "ppbh":"null",
+                "isnwwbz":"ww",
+                "currentPage_Split":JiCi1,
+                "pageSize_Split":"12",
+                "goToPage_Split":JiCi1,
+                }
         POST_Tou=parse.urlencode(POST_Tou).encode(encoding='UTF8')
         Request3=request.Request(url=QingQiu,headers=header1,data=POST_Tou)
         try:

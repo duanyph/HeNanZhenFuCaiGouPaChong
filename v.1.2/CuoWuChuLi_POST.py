@@ -4,8 +4,9 @@ from urllib.parse import quote
 from bs4 import BeautifulSoup
 import socket,sqlite3,re
 socket.setdefaulttimeout(10)
-QingQiu="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/xyghzy/xzsp/XyspList,form.direct"
-header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0"}
+QingQiu="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/xyghzy/xzsp/XyspList,form.sdirect"
+header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0",
+        "Cookie":input("请输入Cookie码：")}
 HouZui=["mp3","mp4","txt","pdf","fiv","doc","png","img","jpg","jpeg","bmp","tmp"]
 ZhenZeHouZhui=r"(."+r"|.".join(HouZui)+r")$"
 URL_ShuJvKu=sqlite3.connect("ShuJvJi.db")
@@ -64,15 +65,23 @@ def RiZhiChuLi(CuoWuMa,url=None,pmbh=None,url2=None,JiCi1=None):
 JiCi1=str(input("请输入错误地址2："))
 pmbh=input("请输入pmbh码：")
 POST_Tou={
-"formids":"gysmcword,skeyword,AddGwc,search,change,jgqj_1,jgqj_2,jgqj_3,jgqj_4,jgqj_5,jgqj_6,xltj,jgtj,sjsjtj,ghslb_qb,ghslb_ds,ghslb_gys",
-"area":"00390019",
-"lastcgje":"0.0",
-"pmbh":pmbh,
-"isnwwbz":"ww",
-"currentPage_Split":JiCi1,
-"pageSize_Split":"12",
-"goToPage_Split":JiCi1,
-}
+        "formids":"gysmcword,skeyword,AddGwc,search,change,jgqj_1,jgqj_2,jgqj_3,jgqj_4,jgqj_5,jgqj_6,xltj,jgtj,sjsjtj,ghslb_qb,ghslb_ds,ghslb_gys",
+        "xmxh":"null",
+        "area":"00390019",
+        "Hidden":pmbh,
+        "Hidden_0":"null",
+        "cgsl":"0",
+        "cgje":"0.0",
+        "lastcgsl":"0",
+        "lastcgje":"0.0",
+        "xyghbh":"null",
+        "pmbh":pmbh,
+        "ppbh":"null",
+        "isnwwbz":"ww",
+        "currentPage_Split":JiCi1,
+        "pageSize_Split":"12",
+        "goToPage_Split":JiCi1,
+        }
 POST_Tou=parse.urlencode(POST_Tou).encode(encoding='UTF8')
 Request3=request.Request(url=QingQiu,headers=header1,data=POST_Tou)
 try:
