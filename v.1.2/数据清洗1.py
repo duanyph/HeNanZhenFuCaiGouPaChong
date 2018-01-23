@@ -24,10 +24,11 @@ for ShanPing in ShangPingJi:
         a+=1
         # if ShangPingJi2[a][3]=="史泰博（上海）有限公司":
         #     ShiTaiBo=ShangPingJi2[a][4]
-        if DuiBi[3]=="史泰博（上海）有限公司":
-            ShiTaiBo=DuiBi[4]
         if DuiBi[4]>ShangPingJi2[a][4]:
             DuiBi=ShangPingJi2[a]
+    for b in ShangPingJi2:
+        if b[3]=="史泰博（上海）有限公司":
+            ShiTaiBo=b[4]
     ShuChu=list(DuiBi)
     ShuChu.append(ShiTaiBo)
     if DuiBi[4]==ShiTaiBo:
