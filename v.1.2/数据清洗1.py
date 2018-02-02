@@ -1,5 +1,4 @@
-import sqlite3
-import csv
+import sqlite3,csv,re
 JiCi=0
 WenJian=open("数据集.csv","w",encoding='gbk',newline='')
 xie=csv.writer(WenJian,dialect="excel")
@@ -12,6 +11,12 @@ YouBiao=ShuJvKu.cursor()
 YouBiao.execute("select distinct 品目,品牌,商品 from ShuJvJi")
 ShangPingJi=YouBiao.fetchall()
 ShangPingJi=set(ShangPingJi)
+def ZuHe(JiaGe):
+    ZiFu=re.findall("([^￥^,^.]+)",JiaGe)
+    LinShi=""
+    for c in ZiFu:
+        LinShi=LinShi+c
+    return int(LinShi)
 for ShanPing in ShangPingJi:
     ShiTaiBo="空"
     JiCi+=1
@@ -24,7 +29,7 @@ for ShanPing in ShangPingJi:
         a+=1
         # if ShangPingJi2[a][3]=="史泰博（上海）有限公司":
         #     ShiTaiBo=ShangPingJi2[a][4]
-        if DuiBi[4]>ShangPingJi2[a][4]:
+        if ZuHe(DuiBi[4])>ZuHe(ShangPingJi2[a][4]):
             DuiBi=ShangPingJi2[a]
     for b in ShangPingJi2:
         if b[3]=="史泰博（上海）有限公司":
