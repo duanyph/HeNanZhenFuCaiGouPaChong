@@ -6,7 +6,7 @@ import socket,sqlite3,re
 socket.setdefaulttimeout(10)
 QingQiu="http://www.hngp.gov.cn/wsscnew/egp/jy/xyghjy/xyghxm/xyghzy/xzsp/XyspList,form.sdirect"
 header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0",
-        "Cookie":input("请输入Cookie码：")}
+        "Cookie":open("Cookie.txt","r").read()}
 HouZui=["mp3","mp4","txt","pdf","fiv","doc","png","img","jpg","jpeg","bmp","tmp"]
 ZhenZeHouZhui=r"(."+r"|.".join(HouZui)+r")$"
 URL_ShuJvKu=sqlite3.connect("ShuJvJi.db")

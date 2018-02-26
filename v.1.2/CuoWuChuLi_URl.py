@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 import socket,sqlite3,re
 JiCi=0
 socket.setdefaulttimeout(10)
-header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0"
-        "Cookie":input("请输入Cookie码：")}
+header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0",
+        "Cookie":open("Cookie.txt","r").read()}
 url=input("请输入错误链接1：")
 HouZui=["mp3","mp4","txt","pdf","fiv","doc","png","img","jpg","jpeg","bmp","tmp"]
 ZhenZeHouZhui=r"(."+r"|.".join(HouZui)+r")$"
