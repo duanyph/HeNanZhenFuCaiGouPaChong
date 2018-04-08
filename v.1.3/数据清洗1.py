@@ -20,7 +20,7 @@ def ZuHe(JiaGe):
 for ShanPing in ShangPingJi:
     ShiTaiBo="空"
     JiCi+=1
-    YouBiao.execute("select 品目,品牌,商品,供货商,报价,更新时间 from ShuJvJi where 品目='"+ShanPing[0]+"' and 品牌='"+ShanPing[1]+"' and 商品='"+ShanPing[2]+"'")
+    YouBiao.execute("select 品目,品牌,商品,电商名称,商品报价,价格更新时间 from ShuJvJi where 品目='"+ShanPing[0]+"' and 品牌='"+ShanPing[1]+"' and 商品='"+ShanPing[2]+"'")
     ShangPingJi2=YouBiao.fetchall()
     DuiBi=ShangPingJi2[0]
     # if DuiBi[3]=="史泰博（上海）有限公司":
@@ -45,8 +45,7 @@ for ShanPing in ShangPingJi:
     ShuChu.append(ZuiDi)
     xie.writerow(ShuChu)
     WenJian.flush()
-    print(str(JiCi)+"|写出数据：",end="")
-    print(ShuChu)
+    print(str(JiCi)+"|写出数据："+DuiBi[2])
 WenJian.flush()
 WenJian.close()
 ShuJvKu.close()

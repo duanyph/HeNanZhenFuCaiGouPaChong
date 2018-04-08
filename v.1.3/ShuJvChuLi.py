@@ -4,8 +4,9 @@ from urllib.parse import quote
 from bs4 import BeautifulSoup
 import sqlite3,re,socket,time
 socket.setdefaulttimeout(10)
-# RiZhi=open("ShuJv_RiZhi.log","w+")
-# RiZhi.close()
+RiZhi=open("ShuJv_RiZhi.log","w+")
+RiZhi.write("错误码|错误链接\n")
+RiZhi.close()
 header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0",
         # "Cookie":open("Cookie.txt","r").read()
         }
@@ -45,14 +46,14 @@ def ShuJv(BeautifulSoup1):
     tr_Ji=tr_Ji[1:]
     for tr in tr_Ji:
         td_Ji=tr.find_all("td")
-        # print("采集数据:",PingMu,PinPai,ShangPing,FenShu,GongHuo,FuWu,BaoJia,LianXiRen,ShouJi,DianHua,GengXinShiJian)
+        print("采集数据:",ShangPing)
         YouBiao.execute("insert into ShuJvJi (品目,品牌,商品,综合评价,电商名称,服务承诺,授权信息,商品报价,配件信息,联系人,移动电话,上架时间,价格更新时间) values('"+PingMu+"','"+PinPai+"','"+ShangPing+"','"+td_Ji[0].get_text()+"','"+td_Ji[1].get_text()+"','"+td_Ji[2].get_text()+"','"+td_Ji[3].get_text()+"','"+td_Ji[4].get_text()+"','"+td_Ji[5].get_text()+"','"+td_Ji[6].get_text()+"','"+td_Ji[7].get_text()+"','"+td_Ji[8].get_text()+"','"+td_Ji[9].get_text()+"')")
         URL_ShuJvKu.commit() 
 #错误日志处理
-""" def RiZhiChuLi(CuoWuMa,url=None,xhbh=None,xyghbh=None,url2=None):
+def RiZhiChuLi(CuoWuMa,url="None"):
     RiZhi=open("ShuJv_RiZhi.log","a+")
-    RiZhi.write(str(CuoWuMa)+"|"+str(JiCi)+"|"+url+"|"+xhbh+"|"+xyghbh+"|"+url2+"\n")
-    RiZhi.close() """
+    RiZhi.write(str(CuoWuMa)+"|"+url+"\n")
+    RiZhi.close()
 while 1:
     JiCi+=1
     YouBiao.execute("select URL from URL_Ji2 where ID="+str(JiCi))
@@ -61,27 +62,27 @@ while 1:
         url=url[0]
     else:
         break
-    # try:
-    Request1=request.Request(url=url,headers=header1)
     try:
-        DaKai_url=request.urlopen(Request1)
-    except:
+        Request1=request.Request(url=url,headers=header1)
         try:
             DaKai_url=request.urlopen(Request1)
         except:
-            print("打开链接"+url+"超时！略过此链接！")
-            # RiZhiChuLi(1,url,xhbh,xyghbh,url2)
-            continue
-    print(str(JiCi)+"|打开链接："+url)
-    BeautifulSoup2=BeautifulSoup(DaKai_url,"html.parser",from_encoding="utf-8")
-    ShuJv(BeautifulSoup2)
-    time.sleep(0.1)
-    """ except KeyboardInterrupt:
+            try:
+                DaKai_url=request.urlopen(Request1)
+            except:
+                print(str(JiCi)+"|打开链接"+url+"超时，略过！")
+                RiZhiChuLi(1,url)
+                continue
+        print(str(JiCi)+"|打开链接："+url)
+        BeautifulSoup2=BeautifulSoup(DaKai_url,"html.parser",from_encoding="utf-8")
+        ShuJv(BeautifulSoup2)
+        time.sleep(0.2)
+    except KeyboardInterrupt:
         print("终止运行！")
         break
     except :
-        # RiZhiChuLi(3,url,xhbh,xyghbh,url2)
-        # print("|打开链接"+url2+"异常！略过此链接！")
-        continue """
+        RiZhiChuLi(2,url)
+        print(str(JiCi)+"|打开链接"+url+"异常，已记录到日志！")
+        continue
 URL_ShuJvKu.commit()
 URL_ShuJvKu.close()
