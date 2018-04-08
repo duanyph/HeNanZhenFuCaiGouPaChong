@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import sqlite3,re,socket,time
 socket.setdefaulttimeout(10)
 RiZhi=open("ShuJv_RiZhi.log","r+")
+RiZhi.readline()
 header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0",
         # "Cookie":open("Cookie.txt","r").read()
         }
@@ -24,12 +25,8 @@ def ShuJv(BeautifulSoup1):
         print("采集数据:",ShangPing)
         YouBiao.execute("insert into ShuJvJi (品目,品牌,商品,综合评价,电商名称,服务承诺,授权信息,商品报价,配件信息,联系人,移动电话,上架时间,价格更新时间) values('"+PingMu+"','"+PinPai+"','"+ShangPing+"','"+td_Ji[0].get_text()+"','"+td_Ji[1].get_text()+"','"+td_Ji[2].get_text()+"','"+td_Ji[3].get_text()+"','"+td_Ji[4].get_text()+"','"+td_Ji[5].get_text()+"','"+td_Ji[6].get_text()+"','"+td_Ji[7].get_text()+"','"+td_Ji[8].get_text()+"','"+td_Ji[9].get_text()+"')")
         URL_ShuJvKu.commit() 
-while 1:
-    DuHang=RiZhi.readline()
-    if DuHang==None:
-        break
-    DuHang=DuHang.split("|")
-    url=DuHang[1]
+for DuHang in RiZhi.readlines():
+    url=DuHang.split("|")[1]
     Request1=request.Request(url=url,headers=header1)
     try:
         DaKai_url=request.urlopen(Request1)

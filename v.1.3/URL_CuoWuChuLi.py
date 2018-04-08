@@ -50,10 +50,7 @@ def LieBiaoYe(pmbh,YeShu):
         LianJieJi=BeautifulSoup3.find_all("div",class_="item-pic")
         LianJieChuli(LianJieJi)
         time.sleep(0.5)
-while 1:
-    DuHang=RiZhi.readline()
-    if DuHang==None:
-        break
+for DuHang in RiZhi.readlines():
     DuHang=DuHang.split("|")
     if DuHang[0]=="1" or DuHang[0]=="3":
         #提取链接
