@@ -76,7 +76,7 @@ while 1:
         print(str(JiCi)+"|打开链接："+url)
         BeautifulSoup2=BeautifulSoup(DaKai_url,"html.parser",from_encoding="utf-8")
         ShuJv(BeautifulSoup2)
-        time.sleep(0.5)
+        time.sleep(0.2)
     except KeyboardInterrupt:
         print("终止运行！")
         break
