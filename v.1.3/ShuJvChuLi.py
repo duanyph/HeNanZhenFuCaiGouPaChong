@@ -40,14 +40,14 @@ def ShuJv(BeautifulSoup1):
     FenLei=BeautifulSoup1.find_all("a",class_="crumbs-title")
     PingMu=re.findall("\w+",FenLei[0].get_text())[0]
     PinPai=re.findall("\w+",FenLei[1].get_text())[0]
-    ShangPing=BeautifulSoup1.find("span",class_="last").get_text()[1:]
+    ShangPin=BeautifulSoup1.find("span",class_="last").get_text()[1:]
     #供货商列表处理
     tr_Ji=BeautifulSoup1.find("tbody").find_all("tr")
     tr_Ji=tr_Ji[1:]
     for tr in tr_Ji:
         td_Ji=tr.find_all("td")
-        print("采集数据:",ShangPing)
-        YouBiao.execute("insert into ShuJvJi (品目,品牌,商品,综合评价,电商名称,服务承诺,授权信息,商品报价,配件信息,联系人,移动电话,上架时间,价格更新时间) values('"+PingMu+"','"+PinPai+"','"+ShangPing+"','"+td_Ji[0].get_text()+"','"+td_Ji[1].get_text()[1:-2]+"','"+td_Ji[2].get_text()+"','"+td_Ji[3].get_text()+"','"+td_Ji[4].get_text()+"','"+td_Ji[5].get_text()+"','"+td_Ji[6].get_text()+"','"+td_Ji[7].get_text()+"','"+td_Ji[8].get_text()+"','"+td_Ji[9].get_text()+"')")
+        print("采集数据:",ShangPin)
+        YouBiao.execute("insert into ShuJvJi (品目,品牌,商品,综合评价,电商名称,服务承诺,授权信息,商品报价,配件信息,联系人,移动电话,上架时间,价格更新时间) values('"+PingMu+"','"+PinPai+"','"+ShangPin+"','"+td_Ji[0].get_text()+"','"+td_Ji[1].get_text()[2:-2]+"','"+td_Ji[2].get_text()+"','"+td_Ji[3].get_text()+"','"+td_Ji[4].get_text()+"','"+td_Ji[5].get_text()+"','"+td_Ji[6].get_text()+"','"+td_Ji[7].get_text()+"','"+td_Ji[8].get_text()+"','"+td_Ji[9].get_text()+"')")
         URL_ShuJvKu.commit() 
 #错误日志处理
 def RiZhiChuLi(CuoWuMa,url="None"):

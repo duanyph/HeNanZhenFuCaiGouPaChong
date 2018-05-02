@@ -23,23 +23,26 @@ def ShuJv(BeautifulSoup1):
     for tr in tr_Ji:
         td_Ji=tr.find_all("td")
         print("采集数据:",ShangPing)
-        YouBiao.execute("insert into ShuJvJi (品目,品牌,商品,综合评价,电商名称,服务承诺,授权信息,商品报价,配件信息,联系人,移动电话,上架时间,价格更新时间) values('"+PingMu+"','"+PinPai+"','"+ShangPing+"','"+td_Ji[0].get_text()+"','"+td_Ji[1].get_text()[1:-2]+"','"+td_Ji[2].get_text()+"','"+td_Ji[3].get_text()+"','"+td_Ji[4].get_text()+"','"+td_Ji[5].get_text()+"','"+td_Ji[6].get_text()+"','"+td_Ji[7].get_text()+"','"+td_Ji[8].get_text()+"','"+td_Ji[9].get_text()+"')")
-        URL_ShuJvKu.commit() 
+        YouBiao.execute("insert into ShuJvJi (品目,品牌,商品,综合评价,电商名称,服务承诺,授权信息,商品报价,配件信息,联系人,移动电话,上架时间,价格更新时间) values('"+PingMu+"','"+PinPai+"','"+ShangPing+"','"+td_Ji[0].get_text()+"','"+td_Ji[1].get_text()[2:-2]+"','"+td_Ji[2].get_text()+"','"+td_Ji[3].get_text()+"','"+td_Ji[4].get_text()+"','"+td_Ji[5].get_text()+"','"+td_Ji[6].get_text()+"','"+td_Ji[7].get_text()+"','"+td_Ji[8].get_text()+"','"+td_Ji[9].get_text()+"')")
+        URL_ShuJvKu.commit()
 for DuHang in RiZhi.readlines():
-    url=DuHang.split("|")[1]
-    Request1=request.Request(url=url,headers=header1)
     try:
-        DaKai_url=request.urlopen(Request1)
-    except:
+        url=DuHang.split("|")[1]
+        Request1=request.Request(url=url,headers=header1)
         try:
             DaKai_url=request.urlopen(Request1)
         except:
-            print("打开链接"+url+"超时，略过！")
-            continue
-    print("打开链接："+url)
-    BeautifulSoup2=BeautifulSoup(DaKai_url,"html.parser",from_encoding="utf-8")
-    ShuJv(BeautifulSoup2)
-    time.sleep(0.2)
+            try:
+                DaKai_url=request.urlopen(Request1)
+            except:
+                print("打开链接"+url+"超时，略过！")
+                continue
+        print("打开链接："+url)
+        BeautifulSoup2=BeautifulSoup(DaKai_url,"html.parser",from_encoding="utf-8")
+        ShuJv(BeautifulSoup2)
+        time.sleep(0.2)
+    except:
+        print("打开链接"+url+"异常，略过！")
 RiZhi.close()
 URL_ShuJvKu.commit()
 URL_ShuJvKu.close()
