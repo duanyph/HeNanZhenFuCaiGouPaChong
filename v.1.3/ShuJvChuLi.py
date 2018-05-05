@@ -38,8 +38,8 @@ URL_ShuJvKu.commit()
 #数据提取
 def ShuJv(BeautifulSoup1):
     FenLei=BeautifulSoup1.find_all("a",class_="crumbs-title")
-    PingMu=re.findall("\w+",FenLei[0].get_text())[0]
-    PinPai=re.findall("\w+",FenLei[1].get_text())[0]
+    PingMu=re.findall("\S+",FenLei[0].get_text())[0]
+    PinPai=re.findall("\S+",FenLei[1].get_text())[0]
     ShangPin=BeautifulSoup1.find("span",class_="last").get_text()[1:]
     #供货商列表处理
     tr_Ji=BeautifulSoup1.find("tbody").find_all("tr")

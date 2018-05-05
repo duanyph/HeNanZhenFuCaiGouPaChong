@@ -16,35 +16,38 @@ for DiangShang in GongHuoShang:
     JiCi=0
     WenJian=open("数据集/"+DiangShang+NianYueRi+".csv","w",encoding='gbk',newline='')
     xie=csv.writer(WenJian,dialect="excel")
-    xie.writerow(["品目","品牌","商品","最低价报价供货商","最低价报价","更新时间","史泰博报价","史泰博是否最低价"])
+    xie.writerow(["品目","品牌","商品","最低价报价供货商","最低价报价","更新时间","报价","是否最低价"])
     WenJian.close()
     WenJian=open("数据集/"+DiangShang+NianYueRi+".csv","a+",encoding='gbk',newline='')
     xie=csv.writer(WenJian,dialect="excel")
     for ShanPing in ShangPingJi:
-        DiangShang2="空"
-        JiCi+=1
-        YouBiao.execute("select 品目,品牌,商品,电商名称,商品报价,价格更新时间 from ShuJvJi where 品目='"+ShanPing[0]+"' and 品牌='"+ShanPing[1]+"' and 商品='"+ShanPing[2]+"'")
-        ShangPingJi2=YouBiao.fetchall()
-        DuiBi=ShangPingJi2[0]
-        for a in range(len(ShangPingJi2)-1):
-            a+=1
-            if ZuHe(DuiBi[4])>ZuHe(ShangPingJi2[a][4]):
-                DuiBi=ShangPingJi2[a]
-        for b in ShangPingJi2:
-            if b[3]==DiangShang:
-                DiangShang2=b[4]
-        ShuChu=list(DuiBi)
-        ShuChu.append(DiangShang2)
-        if DuiBi[4]==DiangShang2:
-            ZuiDi="是"
-        elif DuiBi[4]<DiangShang2:
-            ZuiDi="否"
-        else:
-            ZuiDi="空"
-        ShuChu.append(ZuiDi)
-        xie.writerow(ShuChu)
-        WenJian.flush()
-        print(str(JiCi)+"|写出数据："+DuiBi[2])
+        try:
+            DiangShang2="空"
+            JiCi+=1
+            YouBiao.execute("select 品目,品牌,商品,电商名称,商品报价,价格更新时间 from ShuJvJi where 品目='"+ShanPing[0]+"' and 品牌='"+ShanPing[1]+"' and 商品='"+ShanPing[2]+"'")
+            ShangPingJi2=YouBiao.fetchall()
+            DuiBi=ShangPingJi2[0]
+            for a in range(len(ShangPingJi2)-1):
+                a+=1
+                if ZuHe(DuiBi[4])>ZuHe(ShangPingJi2[a][4]):
+                    DuiBi=ShangPingJi2[a]
+            for b in ShangPingJi2:
+                if b[3]==DiangShang:
+                    DiangShang2=b[4]
+            ShuChu=list(DuiBi)
+            ShuChu.append(DiangShang2)
+            if DuiBi[4]==DiangShang2:
+                ZuiDi="是"
+            elif DuiBi[4]<DiangShang2:
+                ZuiDi="否"
+            else:
+                ZuiDi="空"
+            ShuChu.append(ZuiDi)
+            xie.writerow(ShuChu)
+            WenJian.flush()
+            print(str(JiCi)+"|写出数据："+DuiBi[2])
+        except:
+            pass
     WenJian.flush()
     WenJian.close()
 ShuJvKu.close()
