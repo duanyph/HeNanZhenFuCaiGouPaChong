@@ -51,7 +51,7 @@ def ShuJv(BeautifulSoup1):
         URL_ShuJvKu.commit() 
 #错误日志处理
 def RiZhiChuLi(CuoWuMa,url="None"):
-    RiZhi=open("ShuJv_RiZhi.log","a+")
+    RiZhi=open("ShuJvRiZhi.log","a+")
     RiZhi.write(str(CuoWuMa)+"|"+url+"\n")
     RiZhi.close()
 while 1:

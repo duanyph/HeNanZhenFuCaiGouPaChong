@@ -4,7 +4,7 @@ from urllib.parse import quote
 from bs4 import BeautifulSoup
 import sqlite3,re,socket,time
 socket.setdefaulttimeout(10)
-RiZhi=open("ShuJv_RiZhi.log","r+")
+RiZhi=open("ShuJvRiZhi.log","r+")
 RiZhi.readline()
 header1={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0",
         # "Cookie":open("Cookie.txt","r").read()
